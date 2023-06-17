@@ -16,6 +16,8 @@ class Song
     DB[:conn].execute(sql)
   end
 
+  
+
   def self.create_table
     sql = <<-SQL
       CREATE TABLE IF NOT EXISTS songs (
@@ -35,7 +37,7 @@ class Song
     SQL
 
     # insert the song
-    DB[:conn].execute(sql, self.name, self.album)
+   DB[:conn].execute(sql, self.name, self.album)
 
     # get the song ID from the database and save it to the Ruby instance
     self.id = DB[:conn].execute("SELECT last_insert_rowid() FROM songs")[0][0]
@@ -51,7 +53,7 @@ class Song
 
   def self.new_from_db(row)
     #self.new is equivalent to Song.new
-    self.new(id:row[0], name: row[1], album:row[2])
+    self.new(id: row[0], name: row[1], album: row[2] )
   end
 
   #This will return an array of rows from the database that matches our query
@@ -59,11 +61,11 @@ class Song
     sql = <<-SQL
     SELECT * 
     FROM songs
-
     SQL
-    DB[:conn].execute(sql).map do |row|
-      self.new_from_db(row)
+  DB[:conn].execute(sql).map do |row|
+    self.new_from_db(row)
   end
+  
 end
 
 def self.find_by_name(name)
